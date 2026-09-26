@@ -1,0 +1,30 @@
+# ============================================================================
+#  FFAMapSwitcher window panels  ->  Nexo glyphs
+#
+#  char U+E5F7 (confirm) and U+E5F8 (vote). Next free: U+E5F9.
+#
+#  Each is the top section of a three-row chest, 176x71, drawn in the window
+#  title: the plugin steps the title back 8px to the window edge, draws the
+#  glyph, then steps back again to write the title text on top of it.
+#
+#  ascent 13 puts the glyph's top row on the window's top edge (the title
+#  line sits at y 6, and a glyph's top is drawn at 6 + 7 - ascent).
+#  height 71 = the texture's own height, so it draws 1:1.
+#  Keep both under 256px - bigger glyphs silently draw nothing.
+#
+#  Used by gui.yml icons ffamap_confirm / ffamap_vote in FFAMapSwitcher.
+# ============================================================================
+
+ffamap_confirm:
+  texture: ffamap/confirm
+  ascent: 13
+  height: 71
+  char: ""
+  font: minecraft:default
+
+ffamap_vote:
+  texture: ffamap/vote
+  ascent: 13
+  height: 71
+  char: ""
+  font: minecraft:default

@@ -1,0 +1,201 @@
+# ============================================================================
+#  FFAMapSwitcher - maps
+#
+#  Every map is a Multiverse world rebuilt from a clean template:
+#
+#    map-templates/<template>/   the untouched copy - never loaded, never written
+#    <world>/                    the live copy players fight in
+#
+#  The live copy is rebuilt from the template when its round ends, and checked
+#  again right before it loads, so every game starts on the same map. To change
+#  a map for good, edit its TEMPLATE with the server stopped.
+#
+#  Per map:
+#    name           shown to players (small caps are applied for you)
+#    world          the live world's folder and Multiverse name
+#    template       folder inside templates.folder (config.yml)
+#    icon           an <icon:name> from gui.yml
+#    material       the menu item Java players see
+#    bedrock-image  a Bedrock texture path, or an https:// image, for the form button
+#    credit         who built it
+#    spawns         where players arrive; one is picked at random.
+#                   Set in game: /ffamap admin setspawn <map>  (addspawn for more)
+#                   A spawn with no y lands on the highest block there.
+#    border         set in game: /ffamap admin setborder <map> <size>
+#                   (centred where you stand; size is the full width in blocks)
+#    time           fixed time of day, 0-24000. Remove it to leave time alone.
+#    generator      overrides worlds.generator in config.yml ("none" for terrain)
+#    gamerules      overrides for config.yml worlds.gamerules
+#    random-radius  players arrive at a random safe spot this far from the map's
+#                   centre - overrides config.yml arrival.random-radius; 0 = the
+#                   spawns above
+#    enabled        false keeps a map out of the rotation
+#
+#  Borders were centred and sized in game by staff. Each spawn sits on the
+#  highest block at its border's centre until you stand somewhere better and
+#  run /ffamap admin setspawn <map>.
+# ============================================================================
+
+config-version: 2
+
+maps:
+
+  merchant_city:
+    name: "Merchant City"
+    world: ffa_merchant_city
+    template: merchant_city
+    icon: coins
+    material: EMERALD
+    bedrock-image: textures/items/emerald
+    credit: "Pink & Airtxet"
+    spawns:
+      - { x: 10573.44, z: -37.75 }
+    border:
+      enabled: true
+      center-x: 10573.44
+      center-z: -37.75
+      size: 800
+      damage-amount: 1.0
+      damage-buffer: 0.0
+      warning-distance: 8
+    time: 6000
+
+  steampunk_city:
+    name: "Steampunk City"
+    world: ffa_steampunk_city
+    template: steampunk_city
+    icon: gear
+    material: COPPER_BULB
+    bedrock-image: textures/items/clock_item
+    credit: ""
+    spawns:
+      - { x: -6941.22, z: -6767.85 }
+    border:
+      enabled: true
+      center-x: -6941.22
+      center-z: -6767.85
+      size: 500
+      damage-amount: 1.0
+      damage-buffer: 0.0
+      warning-distance: 8
+    time: 6000
+
+  law_prison:
+    name: "Law Prison"
+    world: ffa_law_prison
+    template: law_prison
+    icon: lock
+    material: IRON_BARS
+    bedrock-image: textures/blocks/iron_bars
+    credit: "Lechlee"
+    spawns:
+      - { x: 246.5, z: 257.5 }
+    border:
+      enabled: true
+      center-x: 247
+      center-z: 247
+      size: 450
+      damage-amount: 1.0
+      damage-buffer: 0.0
+      warning-distance: 8
+    time: 6000
+
+  null_prison:
+    name: "Null Prison"
+    world: ffa_null_prison
+    template: null_prison
+    icon: key
+    material: CRYING_OBSIDIAN
+    bedrock-image: textures/blocks/crying_obsidian
+    credit: ""
+    spawns:
+      - { x: 301.43, z: 329.57 }
+    border:
+      enabled: true
+      center-x: 301.43
+      center-z: 329.57
+      size: 500
+      damage-amount: 1.0
+      damage-buffer: 0.0
+      warning-distance: 8
+    time: 6000
+
+  highwater_civ:
+    name: "Highwater Civ"
+    world: ffa_highwater_civ
+    template: highwater_civ
+    icon: water
+    material: HEART_OF_THE_SEA
+    bedrock-image: textures/items/heartofthesea_closed
+    credit: ""
+    spawns:
+      - { x: 6882.5, z: 3561.5 }
+    border:
+      enabled: true
+      center-x: 7015
+      center-z: 3591
+      size: 800
+      damage-amount: 1.0
+      damage-buffer: 0.0
+      warning-distance: 8
+    time: 6000
+
+  tomb:
+    name: "The Tomb"
+    world: ffa_tomb
+    template: tomb
+    icon: coffin
+    material: SKELETON_SKULL
+    bedrock-image: textures/items/bone
+    credit: ""
+    spawns:
+      - { x: -167.46, z: 362.36 }
+    border:
+      enabled: true
+      center-x: -167.46
+      center-z: 362.36
+      size: 400
+      damage-amount: 1.0
+      damage-buffer: 0.0
+      warning-distance: 8
+    time: 6000
+
+  wheat_civ:
+    name: "Wheat Civ"
+    world: ffa_wheat_civ
+    template: wheat_civ
+    icon: grass
+    material: HAY_BLOCK
+    bedrock-image: textures/items/wheat
+    credit: "Vox"
+    spawns:
+      - { x: 23302.36, z: 26059.4 }
+    border:
+      enabled: true
+      center-x: 23302.36
+      center-z: 26059.4
+      size: 600
+      damage-amount: 1.0
+      damage-buffer: 0.0
+      warning-distance: 8
+    time: 6000
+
+  eggchan_island:
+    name: "Eggchan Island"
+    world: ffa_eggchan_island
+    template: eggchan_island
+    icon: ui1_anchor
+    material: TURTLE_EGG
+    bedrock-image: textures/items/egg
+    credit: ""
+    spawns:
+      - { x: 5.6, z: -11.67 }
+    border:
+      enabled: true
+      center-x: 5.6
+      center-z: -11.67
+      size: 500
+      damage-amount: 1.0
+      damage-buffer: 0.0
+      warning-distance: 8
+    time: 6000

@@ -1,0 +1,463 @@
+# ============================================================================
+#  FFAMapSwitcher - interfaces
+#
+#  The menus Java players see, and the forms Bedrock players see.
+#  The look matches FFACore: small caps, accent #FF6BE8, values #FFA347,
+#  good #5BF57A, bad #FF5C5C, warn #FFD34E, chrome #5A5A6E.
+#
+#  One rule for pack artwork (<icon:name>): <white> immediately before it,
+#  every time. Minecraft multiplies a glyph by the colour of the text it sits
+#  in, and a window title is drawn dark grey - so an unwrapped glyph comes out
+#  muddy there. Wrapped, it draws white, which is why the titles below carry
+#  one. Bedrock players are never sent artwork at all; their forms are plain.
+# ============================================================================
+
+config-version: 5
+
+# --------------------------------------------------------------------- design
+#
+#  The shared visual language, the same one FFACore's NPC menus are drawn with.
+#  Change it here and both windows follow.
+design:
+
+  # The thin divider <rule> expands to, usable in any lore line or message.
+  # Plain bars rather than a pack glyph, so it still draws for a player who
+  # declined the resource pack, and dim enough to separate lines without
+  # competing with them.
+  rule: "<#5A5A6E>||||||||||||||||||||||"
+
+  # The frame. Tiles are placed first; this fills whatever slots they leave.
+  #
+  #   border      the edge of the window
+  #   background  every slot still empty after that
+  #
+  # Plain grey glass round the edge and nothing else: the tiles are what a
+  # player came for, and a window packed with coloured glass only competes
+  # with them. hide-tooltip stops a frame pane throwing up an empty tooltip
+  # box whenever the cursor crosses it.
+  chrome:
+    border:
+      enabled: true
+      material: GRAY_STAINED_GLASS_PANE
+      hide-tooltip: true
+    background:
+      enabled: false
+      material: BLACK_STAINED_GLASS_PANE
+      hide-tooltip: true
+
+# ------------------------------------------------------------------ the vote
+#
+#  Option placeholders: <map> <map_icon> <credit> <votes> <percent> <time>
+#  and, as whole lines, <rule> <credit_line> <bar> <status>.
+vote-menu:
+  # The Nexo panel drawn behind this window (menus.custom-textures in
+  # config.yml): the first map on the left, the timer in the middle, the
+  # second map on the right - a click anywhere on a map's panel votes for it.
+  # Java players with the pack only; everyone else gets the tiles below.
+  #   glyph        an icon name from icons: at the bottom of this file
+  #   width        the texture's width in pixels
+  #   title        written on top of the texture
+  #   title-align  center (the middle of the window) or left
+  texture:
+    enabled: true
+    glyph: ffamap_vote
+    width: 176
+    title: "<white>ᴍᴀᴘ ᴠᴏᴛᴇ"
+    title-align: center
+  title: "<white><icon:map></white> ᴍᴀᴘ ᴠᴏᴛᴇ"
+  rows: 3
+  # An item in every slot the frame leaves empty, for this window only.
+  # "none" = whatever design.chrome.background says, which is nothing.
+  filler: "none"
+  slots:
+    info: 4
+    options: [11, 15]
+    close: 26
+
+  info:
+    material: CLOCK
+    name: "<white><icon:hourglass> <white>ᴠᴏᴛᴇ ꜰᴏʀ ᴛʜᴇ ɴᴇxᴛ ᴍᴀᴘ"
+    lore:
+      - "<rule>"
+      - "<gray>ᴄʟᴏꜱᴇꜱ ɪɴ <#5A5A6E>• <#FFA347><time>"
+      - "<gray>ɴᴏᴡ ᴘʟᴀʏɪɴɢ <#5A5A6E>• <white><current>"
+      - "<gray>ᴠᴏᴛᴇꜱ ᴄᴀꜱᴛ <#5A5A6E>• <#FFA347><total>"
+      - "<rule>"
+
+  option:
+    name: "<map_icon><white><map>"
+    lore:
+      - "<rule>"
+      - "<credit_line>"
+      - "<gray>ᴠᴏᴛᴇꜱ <#5A5A6E>• <#FFA347><votes> <#5A5A6E>• <#FFA347><percent>%"
+      - "<bar>"
+      - ""
+      - "<status>"
+      - "<rule>"
+    credit: "<#5A5A6E>ʙʏ <gray><credit>"
+    voted: "<white><icon:check> <#5BF57A>ʏᴏᴜʀ ᴠᴏᴛᴇ"
+    not-voted: "<#5BF57A>» <gray>ᴄʟɪᴄᴋ ᴛᴏ ᴠᴏᴛᴇ"
+    glow-when-voted: true
+
+  close:
+    material: BARRIER
+    name: "<white><icon:cross> <#FF5C5C>ᴄʟᴏꜱᴇ"
+
+  # Plain Unicode blocks, not pack glyphs: a vote count is information, so it
+  # has to survive a declined resource pack. Blocks rather than the bars
+  # FFACore fills its progress with, because this one sits two lines under a
+  # <rule> and a row of thin bars there reads as a second rule.
+  bar:
+    length: 10
+    filled: "▰"
+    empty: "▱"
+    filled-style: "<#FF6BE8>"
+    empty-style: "<#5A5A6E>"
+
+# ------------------------------------------------------------ the NPC confirm
+#
+#  What the map NPC shows between votes. Nothing happens until ᴛᴇʟᴇᴘᴏʀᴛ.
+#  Placeholders: <map> <map_icon> <credit> <time> <players>, and <rule> and
+#  <credit_line> as whole lines (the credit is dropped when a map has none).
+confirm-menu:
+  # The Nexo panel: teleport on the left, the map in the middle, cancel on
+  # the right. Each whole panel is the button. See vote-menu for the keys.
+  texture:
+    enabled: true
+    glyph: ffamap_confirm
+    width: 176
+    title: "<white>ᴄᴜʀʀᴇɴᴛ ᴍᴀᴘ"
+    title-align: center
+  title: "<white><icon:map></white> ᴄᴜʀʀᴇɴᴛ ᴍᴀᴘ"
+  rows: 3
+  # An item in every slot the frame leaves empty, for this window only.
+  # "none" = whatever design.chrome.background says, which is nothing.
+  filler: "none"
+  slots:
+    confirm: 11
+    map: 13
+    cancel: 15
+
+  map:
+    name: "<map_icon><white><map>"
+    lore:
+      - "<rule>"
+      - "<credit_line>"
+      - "<gray>ᴛɪᴍᴇ ʟᴇꜰᴛ <#5A5A6E>• <#FFA347><time>"
+      - "<rule>"
+    credit: "<#5A5A6E>ʙʏ <gray><credit>"
+
+  confirm:
+    material: LIME_DYE
+    name: "<white><icon:check> <#5BF57A>ᴛᴇʟᴇᴘᴏʀᴛ"
+    lore:
+      - "<rule>"
+      - "<gray>ᴊᴜᴍᴘ ɪɴᴛᴏ <white><map>"
+      - "<rule>"
+
+  cancel:
+    material: RED_DYE
+    name: "<white><icon:cross> <#FF5C5C>ᴄᴀɴᴄᴇʟ"
+    lore:
+      - "<rule>"
+      - "<gray>ꜱᴛᴀʏ ɪɴ ᴛʜᴇ ʟᴏʙʙʏ"
+      - "<rule>"
+
+# -------------------------------------------------------------- Bedrock forms
+
+bedrock-form:
+  title: "ᴍᴀᴘ ᴠᴏᴛᴇ"
+  content: "<gray>ᴘɪᴄᴋ ᴛʜᴇ ɴᴇxᴛ ᴍᴀᴘ\n<gray>ᴠᴏᴛɪɴɢ ᴄʟᴏꜱᴇꜱ ɪɴ <#FFA347><time>"
+  button: "<#FF6BE8><map>\n<gray><votes> ᴠᴏᴛᴇꜱ"
+  voted-button: "<#5BF57A>✔ <map>\n<gray><votes> ᴠᴏᴛᴇꜱ"
+
+bedrock-confirm:
+  title: "ᴄᴜʀʀᴇɴᴛ ᴍᴀᴘ"
+  content: "<white><map>\n\n<gray>ᴛɪᴍᴇ ʟᴇꜰᴛ <#FFA347><time>"
+  confirm: "ᴛᴇʟᴇᴘᴏʀᴛ"
+  cancel: "ᴄᴀɴᴄᴇʟ"
+
+# ----------------------------------------------------------------------- icons
+#
+#  The <icon:name> tag, generated from the installed Nexo glyph files
+#  (Nullscape Nexo) - the same names and codepoints FFACore uses.
+#  Set enabled: false on a server without the pack.
+#  Values MUST stay double-quoted: YAML only reads \uXXXX inside double quotes.
+icons:
+  enabled: true
+  glyphs:
+
+    # ---------------------------------------------------------- by meaning
+    #
+    #  These are the names the shipped configs use. Re-point one here and it
+    #  changes everywhere at once - that is the whole reason menus refer to
+    #  artwork by name instead of by codepoint.
+
+    # economy
+    token:         "\uE5DF"   # ui4_coin1
+    coin:          "\uE5E0"   # ui4_coinbagicon
+    coins:         "\uE5E1"   # ui4_coinstackicon
+    coins_alt:     "\uE5E2"   # ui4_coinstackicon2
+    money:         "\uE5C3"   # ui3_moneyicon
+    gem:           "\uE5EA"   # ui4_gemicon
+    diamond:       "\uE5E4"   # ui4_diamondicon
+    shard:         "\uE5CB"   # ui3_shardicon
+    orb_blue:      "\uE5DA"   # ui4_blueorbicon
+    orb_green:     "\uE5ED"   # ui4_greenorbicon
+
+    # progression
+    prestige:      "\uE5E3"   # ui4_crownicon
+    crown:         "\uE5E3"   # ui4_crownicon
+    star:          "\uE5CD"   # ui3_staricon
+    streak:        "\uE5E7"   # ui4_fireicon
+    fire:          "\uE5E8"   # ui4_fireicon2
+    lightning:     "\uE5BD"   # ui3_lightningicon
+    wings:         "\uE5D5"   # ui3_wingsicon
+    upgrade:       "\uE58F"   # ui2_levelup
+    downgrade:     "\uE58E"   # ui2_leveldown
+    heart:         "\uE5D9"   # ui4_bluehearticon
+    heart_fire:    "\uE5EE"   # ui4_heartfireicon
+
+    # interfaces
+    shop:          "\uE5D8"   # ui4_bagicon
+    bank:          "\uE5CE"   # ui3_suitcaseicon
+    market:        "\uE569"   # ui1_portal
+    kit:           "\uE5EF"   # ui4_helmeticon
+    enchant:       "\uE566"   # ui1_openbook
+    scroll:        "\uE5CA"   # ui3_scrollicon
+    forge:         "\uE551"   # ui1_campfire
+    gear:          "\uE5E9"   # ui4_gearicon
+    key:           "\uE5F2"   # ui4_keyicon
+    lock:          "\uE5BE"   # ui3_lockicon
+    clock:         "\uE5DE"   # ui4_clockicon
+    hourglass:     "\uE5F0"   # ui4_hourglassicon
+    map:           "\uE5BF"   # ui3_mapicon
+    potion:        "\uE5C8"   # ui3_potionicon
+    potion_alt:    "\uE5C7"   # ui3_potion2icon
+    chestplate:    "\uE57F"   # ui2_chestplate
+    helmet:        "\uE5EF"   # ui4_helmeticon
+
+    # state
+    check:         "\uE5D7"   # ui3_yesicon
+    cross:         "\uE5C5"   # ui3_noicon
+    question:      "\uE5C9"   # ui3_questionmarkicon
+    bell:          "\uE577"   # ui2_bell
+    dot:           "\uE578"   # ui2_bluecircle
+    bulb:          "\uE5BC"   # ui3_lightbulbicon
+    eye:           "\uE5E6"   # ui4_eyeicon
+    search:        "\uE5CC"   # ui3_spyglassicon
+    skull:         "\uE595"   # ui2_skull
+    coffin:        "\uE580"   # ui2_coffin
+    trash:         "\uE572"   # ui1_trashcan
+
+    # navigation
+    up:            "\uE576"   # ui2_arrowup
+    down:          "\uE574"   # ui2_arrowdown
+    left:          "\uE575"   # ui2_arrowleft
+
+    # social
+    chat:          "\uE5DD"   # ui4_chaticonicon
+    member:        "\uE5C0"   # ui3_membericon
+    globe:         "\uE5EB"   # ui4_globeicon
+    microphone:    "\uE5C1"   # ui3_microphoneicon
+    monitor:       "\uE562"   # ui1_monitor
+
+    # world
+    house:         "\uE5F1"   # ui4_houseicon
+    castle:        "\uE5DB"   # ui4_castle
+    cave:          "\uE5DC"   # ui4_caveicon
+    tree:          "\uE5D3"   # ui3_treeicon
+    water:         "\uE5D4"   # ui3_watericon
+    lava:          "\uE5F3"   # ui4_lavaicon
+    sun:           "\uE5CF"   # ui3_sunicon
+    torch:         "\uE5D1"   # ui3_torchicon
+    grass:         "\uE5EC"   # ui4_grassblock
+    rocket:        "\uE593"   # ui2_rocket
+
+    # map switcher windows (Nullscape Nexo glyphs/ffamap.yml)
+    ffamap_confirm: "\uE5F7"  # ffamap/confirm - 176x71 panel
+    ffamap_vote:    "\uE5F8"  # ffamap/vote - 176x71 panel
+
+    # ------------------------------------------------------ the full library
+    #
+    #  Every glyph in the installed packs, under its own pack id. Browse them
+    #  in game with /ffa icons - the menu shows each one rendered next to the
+    #  name you write in <icon:...>.
+
+    # Useful Icons VOL1  (40 glyphs)
+    ui1_anchor:              "\uE54C"
+    ui1_bag:                 "\uE54D"
+    ui1_beer:                "\uE54E"
+    ui1_bluefire:            "\uE54F"
+    ui1_bundle:              "\uE550"
+    ui1_campfire:            "\uE551"
+    ui1_cash:                "\uE552"
+    ui1_chat:                "\uE553"
+    ui1_divinghelmet:        "\uE554"
+    ui1_eye:                 "\uE555"
+    ui1_globe:               "\uE556"
+    ui1_goldcrown:           "\uE557"
+    ui1_grass:               "\uE558"
+    ui1_greenbundle:         "\uE559"
+    ui1_gun:                 "\uE55A"
+    ui1_hat:                 "\uE55B"
+    ui1_helmet:              "\uE55C"
+    ui1_jingyang:            "\uE55D"
+    ui1_leaf:                "\uE55E"
+    ui1_lightbulb:           "\uE55F"
+    ui1_magnifyingglass:     "\uE560"
+    ui1_microphone:          "\uE561"
+    ui1_monitor:             "\uE562"
+    ui1_mushroom:            "\uE563"
+    ui1_note:                "\uE564"
+    ui1_oaklog:              "\uE565"
+    ui1_openbook:            "\uE566"
+    ui1_openscroll:          "\uE567"
+    ui1_opentrashcan:        "\uE568"
+    ui1_portal:              "\uE569"
+    ui1_redpowder:           "\uE56A"
+    ui1_scroll:              "\uE56B"
+    ui1_shoe:                "\uE56C"
+    ui1_sneaker:             "\uE56D"
+    ui1_star:                "\uE56E"
+    ui1_stone:               "\uE56F"
+    ui1_torch:               "\uE570"
+    ui1_towel:               "\uE571"
+    ui1_trashcan:            "\uE572"
+    ui1_yellowgem:           "\uE573"
+
+    # Useful Icons VOL2  (40 glyphs)
+    ui2_arrowdown:           "\uE574"
+    ui2_arrowleft:           "\uE575"
+    ui2_arrowup:             "\uE576"
+    ui2_bell:                "\uE577"
+    ui2_bluecircle:          "\uE578"
+    ui2_board:               "\uE579"
+    ui2_bowlingball:         "\uE57A"
+    ui2_bowlingpawn:         "\uE57B"
+    ui2_camera:              "\uE57C"
+    ui2_checkmark:           "\uE57D"
+    ui2_chesspawn:           "\uE57E"
+    ui2_chestplate:          "\uE57F"
+    ui2_coffin:              "\uE580"
+    ui2_cross:               "\uE581"
+    ui2_diamond:             "\uE582"
+    ui2_emojiangry:          "\uE583"
+    ui2_emojicool:           "\uE584"
+    ui2_emojicry:            "\uE585"
+    ui2_emojihappy:          "\uE586"
+    ui2_emojisick:           "\uE587"
+    ui2_emojismiling:        "\uE588"
+    ui2_facebook:            "\uE589"
+    ui2_google:              "\uE58A"
+    ui2_grassblock:          "\uE58B"
+    ui2_instagram:           "\uE58C"
+    ui2_lettuce:             "\uE58D"
+    ui2_leveldown:           "\uE58E"
+    ui2_levelup:             "\uE58F"
+    ui2_limegem:             "\uE590"
+    ui2_netflix:             "\uE591"
+    ui2_paintbrush:          "\uE592"
+    ui2_rocket:              "\uE593"
+    ui2_sademoji:            "\uE594"
+    ui2_skull:               "\uE595"
+    ui2_steam:               "\uE596"
+    ui2_sun:                 "\uE597"
+    ui2_telegram:            "\uE598"
+    ui2_whatsapp:            "\uE599"
+    ui2_wheel:               "\uE59A"
+    ui2_youtube:             "\uE59B"
+
+    # Useful Icons VOL3  (28 glyphs)
+    ui3_lightbulbicon:       "\uE5BC"
+    ui3_lightningicon:       "\uE5BD"
+    ui3_lockicon:            "\uE5BE"
+    ui3_mapicon:             "\uE5BF"
+    ui3_membericon:          "\uE5C0"
+    ui3_microphoneicon:      "\uE5C1"
+    ui3_mirror:              "\uE5C2"
+    ui3_moneyicon:           "\uE5C3"
+    ui3_mushroomicon:        "\uE5C4"
+    ui3_noicon:              "\uE5C5"
+    ui3_pokeballicon:        "\uE5C6"
+    ui3_potion2icon:         "\uE5C7"
+    ui3_potionicon:          "\uE5C8"
+    ui3_questionmarkicon:    "\uE5C9"
+    ui3_scrollicon:          "\uE5CA"
+    ui3_shardicon:           "\uE5CB"
+    ui3_spyglassicon:        "\uE5CC"
+    ui3_staricon:            "\uE5CD"
+    ui3_suitcaseicon:        "\uE5CE"
+    ui3_sunicon:             "\uE5CF"
+    ui3_teddyicon:           "\uE5D0"
+    ui3_torchicon:           "\uE5D1"
+    ui3_torchicon2:          "\uE5D2"
+    ui3_treeicon:            "\uE5D3"
+    ui3_watericon:           "\uE5D4"
+    ui3_wingsicon:           "\uE5D5"
+    ui3_yangicon:            "\uE5D6"
+    ui3_yesicon:             "\uE5D7"
+
+    # Useful Icons VOL4  (28 glyphs)
+    ui4_bagicon:             "\uE5D8"
+    ui4_bluehearticon:       "\uE5D9"
+    ui4_blueorbicon:         "\uE5DA"
+    ui4_castle:              "\uE5DB"
+    ui4_caveicon:            "\uE5DC"
+    ui4_chaticonicon:        "\uE5DD"
+    ui4_clockicon:           "\uE5DE"
+    ui4_coin1:               "\uE5DF"
+    ui4_coinbagicon:         "\uE5E0"
+    ui4_coinstackicon:       "\uE5E1"
+    ui4_coinstackicon2:      "\uE5E2"
+    ui4_crownicon:           "\uE5E3"
+    ui4_diamondicon:         "\uE5E4"
+    ui4_divinghelmeticon:    "\uE5E5"
+    ui4_eyeicon:             "\uE5E6"
+    ui4_fireicon:            "\uE5E7"
+    ui4_fireicon2:           "\uE5E8"
+    ui4_gearicon:            "\uE5E9"
+    ui4_gemicon:             "\uE5EA"
+    ui4_globeicon:           "\uE5EB"
+    ui4_grassblock:          "\uE5EC"
+    ui4_greenorbicon:        "\uE5ED"
+    ui4_heartfireicon:       "\uE5EE"
+    ui4_helmeticon:          "\uE5EF"
+    ui4_hourglassicon:       "\uE5F0"
+    ui4_houseicon:           "\uE5F1"
+    ui4_keyicon:             "\uE5F2"
+    ui4_lavaicon:            "\uE5F3"
+
+    # Fantastic Icons  (32 glyphs)
+    icon_1:                  "\uE520"
+    icon_2:                  "\uE521"
+    icon_3:                  "\uE522"
+    icon_4:                  "\uE523"
+    icon_5:                  "\uE524"
+    icon_6:                  "\uE525"
+    icon_7:                  "\uE526"
+    icon_8:                  "\uE527"
+    icon_9:                  "\uE528"
+    icon_10:                 "\uE529"
+    icon_11:                 "\uE52A"
+    icon_12:                 "\uE52B"
+    icon_13:                 "\uE52C"
+    icon_14:                 "\uE52D"
+    icon_15:                 "\uE52E"
+    icon_16:                 "\uE52F"
+    icon_17:                 "\uE530"
+    icon_18:                 "\uE531"
+    icon_19:                 "\uE532"
+    icon_20:                 "\uE533"
+    icon_21:                 "\uE534"
+    icon_22:                 "\uE535"
+    icon_23:                 "\uE536"
+    icon_24:                 "\uE537"
+    icon_25:                 "\uE538"
+    icon_26:                 "\uE539"
+    icon_27:                 "\uE53A"
+    icon_28:                 "\uE53B"
+    icon_29:                 "\uE53C"
+    icon_30:                 "\uE53D"
+    icon_31:                 "\uE53E"
+    icon_32:                 "\uE53F"

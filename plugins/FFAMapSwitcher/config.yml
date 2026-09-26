@@ -1,0 +1,186 @@
+# ============================================================================
+#  FFAMapSwitcher - rotation
+#
+#  One map is live at a time. Near the end of its round two other maps go up
+#  for a vote, the winner loads, and the map that just finished is restored
+#  from its template so it is untouched the next time it comes up.
+#
+#  Durations accept 20m, 90s, 1h30m, or a plain number of seconds.
+# ============================================================================
+
+config-version: 4
+
+rotation:
+  # How long each map is live.
+  round-length: 20m
+  # Voting runs during the last part of the round...
+  vote-length: 60s
+  # ...then the winner is announced, and loads while this counts down.
+  switch-countdown: 10s
+  # Maps played this recently are held back from the vote while there are
+  # others to offer. The live map is never offered.
+  # 2 = neither the live map nor the one before it.
+  avoid-recent: 2
+  # Nobody online when a vote would open: keep the map and restart its timer
+  # instead of loading and restoring maps for an empty server.
+  skip-when-empty: true
+  # The first map after a restart: a map id from maps.yml, or random.
+  startup-map: random
+  # Where players still inside the old map go when its round ends:
+  #   LOBBY     back to the lobby - they enter the new map through the NPC
+  #   NEXT_MAP  straight to the new map's spawn
+  players-in-old-map: LOBBY
+
+lobby:
+  # Set in game with /ffamap admin setlobby. Empty = the main world's spawn.
+  location: ""
+  # Dying inside a map respawns you at the lobby.
+  respawn-in-lobby: true
+  # Logging in inside a map moves you to the lobby.
+  join-in-lobby: true
+
+arrival:
+  # Players entering a map - from the NPC, /ffamap join, or moved over when the
+  # map changes - land on a random safe spot within this many blocks of the
+  # map's centre (its border's centre), facing the middle. Never in water,
+  # lava, the void or outside the border. The spots are found when the map
+  # loads, so joining stays instant. 0 = the fixed spawns in maps.yml instead.
+  # One map can use its own with random-radius: in maps.yml.
+  random-radius: 200
+
+npc:
+  # Citizens NPC ids that act as the map NPC. Add one in game with
+  #   /npc select   then   /ffamap admin npc add <id>
+  # Any other NPC plugin: have the NPC run the command "ffamap" as the player.
+  citizens-ids: []
+  # Left-clicking the NPC works too (Bedrock players often hit rather than use).
+  left-click: true
+  click-cooldown: 1s
+  # Between votes the NPC shows the live map and waits for a press on
+  # ᴛᴇʟᴇᴘᴏʀᴛ. false = it teleports on the click.
+  confirm-teleport: true
+  # The label floating above every map NPC, drawn like FFACore's NPC labels: a
+  # big title, the lines under it and the click line, with no panel behind. It
+  # follows the round - the live map and its time left, the vote while voting,
+  # the next map during the countdown. The words are hologram: in messages.yml.
+  hologram:
+    enabled: true
+    # Blocks above the top of the NPC's head.
+    height: 0.25
+    # How much bigger the title is than the lines under it.
+    title-scale: 1.6
+    # vertical: the label turns to face you but stays upright, so the title
+    # never slides down over the lines under it when you read it from close by
+    # and below - which is where an NPC is read from. center tilts it at you as
+    # well; fixed and horizontal do not turn at all. The same as FFACore's.
+    billboard: vertical
+    # none (or #00000000) = no panel, just shadowed text. #RRGGBB = a half
+    # see-through panel, #AARRGGBB = you pick how see-through (00 clear, FF solid).
+    background: "#00000000"
+    # Wider than this and a line wraps (in pixels; a small-caps letter is ~6).
+    line-width: 240
+    text-shadow: true
+    # 1.0 = seen from about 64 blocks.
+    view-range: 1.0
+    # Citizens draws text of its own on an NPC - its name tag, and any lines
+    # added with /npc hologram - right where this label goes, and players
+    # read two timers stacked on top of each other. On: the name tag is switched
+    # off for the session (nothing is saved to the NPC) and Citizens' hologram
+    # lines are hidden from players, not deleted. Off: all of it comes back.
+    hide-citizens-text: true
+
+vote:
+  # Who gets the vote menu opened for them when voting starts:
+  #   LOBBY  players in the lobby world - nobody gets a menu mid-fight
+  #   ALL    everyone
+  #   NONE   nobody; they use the NPC or /ffamap vote
+  open-menu-for: LOBBY
+  # A boss bar with the live count and the timer while voting and counting down.
+  boss-bar: true
+
+templates:
+  # The clean copies, relative to the server folder (or an absolute path).
+  # Each map's template is <folder>/<template> from maps.yml.
+  folder: map-templates
+  # Upload a world to that folder - a world folder, a folder with the world
+  # inside it, or a .zip of either - and it becomes a map: unzipped, cleaned
+  # of single-player leftovers, centred on its build and written into
+  # maps.yml with a spawn and a border. true = on every start and reload.
+  # false = it waits under "New maps" in /ffamap admin until you add it.
+  auto-import: true
+  # true = a new map joins the vote straight away. false = it stays out of
+  # the rotation until you've checked its spawn and border in the panel.
+  auto-enable: false
+  # The border a new map starts with, in blocks across.
+  default-border: 500
+
+menus:
+  # The Nexo panels drawn behind the vote and teleport windows (needs the
+  # ffamap glyphs from the Nexo pack). false = the classic tiles from gui.yml.
+  # Bedrock players always get the classic look or a native form.
+  custom-textures: true
+
+bedrock:
+  # Bedrock players (through Floodgate) vote and confirm in native forms
+  # instead of chest menus. They never get pack artwork - Bedrock cannot draw it.
+  forms: true
+
+evacuation:
+  # Granted for the instant a player is moved out of a closing map, so a
+  # combat plugin does not refuse the teleport. The move is forced regardless.
+  temporary-permissions:
+    - ffacore.bypass.combat-commands
+
+display:
+  # Map names and credits from maps.yml are shown in small caps.
+  small-caps-names: true
+
+worlds:
+  # The chunk generator for everything a map does not already contain. VoidGen
+  # keeps it empty, so nothing new appears past a build. Needs the VoidGen
+  # plugin; without it maps still load, with a warning. "none" = normal terrain.
+  # A single map can override this with generator: in maps.yml.
+  generator: VoidGen
+  # Every map is loaded on this difficulty, whatever the download was saved
+  # with: peaceful, easy, normal, hard - or "keep" to leave each map alone.
+  # Hard means mobs hit for full damage and hunger can kill.
+  difficulty: HARD
+  # Chunks held loaded around each spawn while a map is live (radius in chunks).
+  spawn-chunk-radius: 2
+  # Applied every time a map loads. A map can override any of these in maps.yml.
+  # Names are Bukkit's game rule constants.
+  gamerules:
+    DO_MOB_SPAWNING: false
+    DO_DAYLIGHT_CYCLE: false
+    DO_WEATHER_CYCLE: false
+    DO_FIRE_TICK: false
+    MOB_GRIEFING: false
+    DO_TRADER_SPAWNING: false
+    DO_PATROL_SPAWNING: false
+    DO_WARDEN_SPAWNING: false
+    DO_INSOMNIA: false
+    DISABLE_RAIDS: true
+    ANNOUNCE_ADVANCEMENTS: false
+
+# Sound names are Minecraft sound ids. Blank one out to silence that cue.
+sounds:
+  vote-open:
+    sound: block.note_block.pling
+    volume: 1.0
+    pitch: 1.2
+  vote-cast:
+    sound: ui.button.click
+    volume: 0.8
+    pitch: 1.4
+  countdown:
+    sound: block.note_block.hat
+    volume: 0.8
+    pitch: 1.0
+  map-live:
+    sound: entity.player.levelup
+    volume: 0.8
+    pitch: 1.1
+  join:
+    sound: entity.enderman.teleport
+    volume: 0.7
+    pitch: 1.0

@@ -1,0 +1,233 @@
+# ============================================================================
+#  FFAMapSwitcher - messages
+#
+#  MiniMessage. Lists are several lines; blank entries are spacing. Set a
+#  message to "" to switch it off.
+#
+#  One colour for map names (#FF6BE8), white for numbers, grey for the rest.
+#  No prefix on anything - every line says what it is about on its own.
+#
+#  Map placeholders: <map> <map_name> <map_id> <credit> <map_icon>
+#    <map>       the name in small caps
+#    <map_name>  the name exactly as maps.yml writes it
+#    <map_icon>  the map's Nexo icon plus a space, for Java players only
+#
+#  Pack artwork: always <white> right before an <icon:...>.
+# ============================================================================
+
+config-version: 3
+
+# Kept for older lines that still use <prefix>. Empty on purpose.
+prefix: ""
+
+# %ffamap_state% and the staff panel
+states:
+  loading: "ʟᴏᴀᴅɪɴɢ"
+  playing: "ᴘʟᴀʏɪɴɢ"
+  voting: "ᴠᴏᴛɪɴɢ"
+  starting: "ꜱᴛᴀʀᴛɪɴɢ"
+
+statuses:
+  unchecked: "<gray>ᴜɴᴄʜᴇᴄᴋᴇᴅ"
+  repairing: "<#FFD34E>ʀᴇꜱᴛᴏʀɪɴɢ"
+  ready: "<#5BF57A>ʀᴇᴀᴅʏ"
+  loading: "<#FFD34E>ʟᴏᴀᴅɪɴɢ"
+  live: "<#FF6BE8>ʟɪᴠᴇ"
+  closing: "<#FFD34E>ᴄʟᴏꜱɪɴɢ"
+  broken: "<#FF5C5C>ʙʀᴏᴋᴇɴ"
+  off: "<#5A5A6E>ᴏᴜᴛ ᴏꜰ ʀᴏᴛᴀᴛɪᴏɴ"
+
+# ----------------------------------------------------------------- the NPC
+#
+#  The label floating above every map NPC: a big title, the lines under it,
+#  then the click line - no panel, just shadowed text. One block per state of
+#  the round. A state can set its own click: in place of the shared one.
+#  Placeholders: <map> <map_name> <map_icon> <time> <players> and, while
+#  voting, <option_1> <option_2> <votes_1> <votes_2>.
+hologram:
+  click: "<#9A9AAA>→ ᴄʟɪᴄᴋ ᴍᴇ ←"
+  loading:
+    title: "<white><icon:map> <#FF6BE8>Maps"
+    lines:
+      - "<gray>ᴛʜᴇ ɴᴇxᴛ ᴍᴀᴘ ɪꜱ ʟᴏᴀᴅɪɴɢ"
+    click: ""
+  playing:
+    title: "<map_icon><#FF6BE8><map_name>"
+    lines:
+      - "<white><icon:hourglass> <white><time> <gray>ʟᴇꜰᴛ"
+  voting:
+    title: "<white><icon:map> <#FF6BE8>Map Vote"
+    lines:
+      - "<white><option_1> <#FFA347><votes_1> <gray>ᴠꜱ <#FFA347><votes_2> <white><option_2>"
+      - "<white><icon:hourglass> <gray>ᴇɴᴅꜱ ɪɴ <white><time>"
+  starting:
+    title: "<map_icon><#FF6BE8><map_name>"
+    lines:
+      - "<white><icon:hourglass> <gray>ꜱᴛᴀʀᴛꜱ ɪɴ <white><time>"
+
+# -------------------------------------------------------------------- help
+
+help:
+  - ""
+  - "<#FF6BE8>ᴍᴀᴘꜱ"
+  - "<white>/ffamap <gray>ᴘʟᴀʏ ᴏʀ ᴠᴏᴛᴇ, ꜱᴀᴍᴇ ᴀꜱ ᴛʜᴇ ɴᴘᴄ"
+  - "<white>/ffamap join <gray>ᴊᴜᴍᴘ ɪɴᴛᴏ ᴛʜᴇ ʟɪᴠᴇ ᴍᴀᴘ"
+  - "<white>/ffamap info <gray>ᴡʜᴀᴛ'ꜱ ᴘʟᴀʏɪɴɢ"
+  - ""
+
+help-admin:
+  - ""
+  - "<#FF6BE8>Map switcher <gray>- <white>/ffamap admin <gray>opens the staff panel"
+  - "<white>status <gray>- the rotation and every map"
+  - "<white>switch <map> <gray>- change map now, no vote"
+  - "<white>vote <gray>- open the vote now"
+  - "<white>extend <time> <gray>- add time to this round"
+  - "<white>tp <map> <gray>- visit a map"
+  - "<white>enable | disable <map> <gray>- in or out of the rotation"
+  - "<white>setspawn | addspawn | clearspawns <map>"
+  - "<white>setborder <map> <size> <gray>- centred where you stand"
+  - "<white>border <map> on | off"
+  - "<white>setlobby <gray>- where players go back to"
+  - "<white>npc add | remove | list <id>"
+  - "<white>import [name | all] <gray>- add maps uploaded to the templates folder"
+  - "<white>repair <map> <gray>| <white>reload"
+  - ""
+
+# -------------------------------------------------------------------- vote
+#
+#  Voting happens at the NPC and in the vote window - there is no voting in
+#  chat.
+
+vote:
+  opened:
+    - ""
+    - "<#FF6BE8>ᴍᴀᴘ ᴠᴏᴛᴇ ɪꜱ ᴏᴘᴇɴ"
+    - "<white><option_1> <gray>ᴏʀ <white><option_2> <gray>· ᴛᴀʟᴋ ᴛᴏ ᴛʜᴇ ɴᴘᴄ ᴛᴏ ᴠᴏᴛᴇ"
+    - ""
+  cast: "<gray>ʏᴏᴜ ᴠᴏᴛᴇᴅ ꜰᴏʀ <#FF6BE8><map>"
+  changed: "<gray>ᴠᴏᴛᴇ ᴄʜᴀɴɢᴇᴅ ᴛᴏ <#FF6BE8><map>"
+  unchanged: "<gray>ʏᴏᴜ ᴀʟʀᴇᴀᴅʏ ᴠᴏᴛᴇᴅ ꜰᴏʀ <#FF6BE8><map>"
+  not-open: "<gray>ᴛʜᴇʀᴇ'ꜱ ɴᴏ ᴠᴏᴛᴇ ʀɪɢʜᴛ ɴᴏᴡ"
+  closed: "<#FF6BE8><map> <gray>ᴡᴏɴ ᴛʜᴇ ᴠᴏᴛᴇ"
+  no-vote-needed: "<gray>ɴᴇxᴛ ᴍᴀᴘ <#FF6BE8><map>"
+
+# ------------------------------------------------------------------ switch
+
+switch:
+  # Action bar while the next map counts down.
+  countdown: "<gray>ɴᴇxᴛ ᴍᴀᴘ <#FF6BE8><map> <gray>ɪɴ <white><time>"
+  waiting: "<gray>ʟᴏᴀᴅɪɴɢ <#FF6BE8><map>"
+  live: "<gray>ɴᴏᴡ ᴘʟᴀʏɪɴɢ <#FF6BE8><map>"
+  title: "<#FF6BE8><map>"
+  subtitle: "<gray>ɴᴏᴡ ᴘʟᴀʏɪɴɢ"
+  moved-lobby: "<gray>ᴛʜᴇ ᴍᴀᴘ ɪꜱ ɴᴏᴡ <#FF6BE8><map> <gray>· ᴛᴀʟᴋ ᴛᴏ ᴛʜᴇ ɴᴘᴄ ᴛᴏ ᴘʟᴀʏ"
+  moved-map: "<gray>ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ <#FF6BE8><map>"
+  replay: "<#FF6BE8><map> <gray>ᴡᴏɴ ᴀɢᴀɪɴ"
+  staying: "<#FF6BE8><map> <gray>ꜱᴛᴀʏꜱ ꜰᴏʀ ᴀɴᴏᴛʜᴇʀ ʀᴏᴜɴᴅ"
+  fallback: "<gray>ᴛʜᴀᴛ ᴍᴀᴘ ᴄᴏᴜʟᴅɴ'ᴛ ʟᴏᴀᴅ · ᴘʟᴀʏɪɴɢ <#FF6BE8><map>"
+  forced: "<gray>ꜱᴡɪᴛᴄʜɪɴɢ ᴛᴏ <#FF6BE8><map>"
+
+# -------------------------------------------------------------------- join
+
+join:
+  # Chat line as the teleport starts. The title below already says where.
+  sending: ""
+  title: "<#FF6BE8><map>"
+  subtitle: "<white><time> <gray>ʟᴇꜰᴛ"
+  already-there: "<gray>ʏᴏᴜ'ʀᴇ ᴀʟʀᴇᴀᴅʏ ɪɴ <#FF6BE8><map>"
+  loading: "<#FF6BE8><map> <gray>ɪꜱ ʟᴏᴀᴅɪɴɢ · ᴛʀʏ ᴀɢᴀɪɴ ɪɴ ᴀ ᴍᴏᴍᴇɴᴛ"
+  gone: "<#FF6BE8><map> <gray>ᴊᴜꜱᴛ ᴇɴᴅᴇᴅ"
+  failed: "<#FF5C5C>ᴄᴏᴜʟᴅɴ'ᴛ ᴛᴇʟᴇᴘᴏʀᴛ ʏᴏᴜ ʀɪɢʜᴛ ɴᴏᴡ"
+
+# -------------------------------------------------------------------- info
+
+info:
+  playing: "<gray>ɴᴏᴡ ᴘʟᴀʏɪɴɢ <#FF6BE8><map> <gray>· <white><time> <gray>ʟᴇꜰᴛ"
+  voting: "<gray>ᴠᴏᴛɪɴɢ <white><option_1> <#FFA347><votes_1> <gray>ᴠꜱ <#FFA347><votes_2> <white><option_2> <gray>· <white><time>"
+  starting: "<gray>ɴᴇxᴛ ᴍᴀᴘ <#FF6BE8><map> <gray>ɪɴ <white><time>"
+  loading: "<gray>ᴛʜᴇ ᴀʀᴇɴᴀ ɪꜱ ʟᴏᴀᴅɪɴɢ"
+
+# ---------------------------------------------------------------- boss bar
+
+boss-bar:
+  voting: "<white><option_1> <#FFA347><votes_1>  <gray>ᴠꜱ  <#FFA347><votes_2> <white><option_2>  <gray>· <white><time>"
+  starting: "<gray>ɴᴇxᴛ ᴍᴀᴘ <#FF6BE8><map> <gray>ɪɴ <white><time>"
+  waiting: "<gray>ʟᴏᴀᴅɪɴɢ <#FF6BE8><map>"
+
+# ------------------------------------------------------------------- staff
+#
+#  Staff-only lines stay in normal case, so they are quick to read.
+
+command:
+  players-only: "<#FF5C5C>Only players can do that."
+  no-permission: "<#FF5C5C>You don't have permission."
+  need-map: "<gray>Name a map: <white><maps>"
+  unknown-map: "<gray>No map called <white><input><gray>. Maps: <white><maps>"
+  bad-number: "<white><input> <gray>isn't a number."
+  bad-duration: "<white><input> <gray>isn't a length of time - try 5m or 90s."
+  need-size: "<gray>Give a width in blocks: <white>/ffamap admin setborder <map_id> 500"
+  need-duration: "<gray>How long? <white>/ffamap admin extend 5m"
+
+admin:
+  status-header:
+    - ""
+    - "<#FF6BE8>Rotation <gray>- <white><phase>"
+    - "<gray>Live <#FF6BE8><map> <gray>- <white><time> <gray>left"
+    - "<gray>Next <white><next>"
+    - "<gray>Vote <white><votes>"
+    - "<gray>Lobby <white><lobby>"
+  status-map: "<white><map_id> <status> <gray>- spawns <white><spawns> <gray>- border <white><border> <gray>- <white><size> <#FF5C5C><problem>"
+  switching: "<gray>Switching to <#FF6BE8><map> <gray>as soon as it's loaded."
+  busy: "<gray>A map is loading or switching - try again in a few seconds."
+  busy-loading: "<#FF6BE8><map> <gray>is loading for the rotation - try again in a moment."
+  not-usable: "<#FF6BE8><map> <gray>can't be used: <white><problem>"
+  vote-started: "<gray>Vote opened."
+  extended: "<gray>Round changed by <white><time><gray> - it now ends in <white><left><gray>."
+  extend-not-now: "<gray>Only a map that is playing can be extended."
+  lobby-set: "<gray>Lobby set to <white><location><gray>."
+  lobby-in-map: "<#FF5C5C>The lobby can't be inside a map world."
+  not-in-map: "<gray>Stand in <#FF6BE8><map> <gray>first: <white>/ffamap admin tp <map_id>"
+  spawn-set: "<gray>Spawn for <#FF6BE8><map> <gray>set to <white><location><gray>."
+  spawn-added: "<gray>Spawn added to <#FF6BE8><map> <gray>at <white><location> <gray>(<white><count><gray> total)."
+  spawns-cleared: "<gray>Cleared <#FF6BE8><map><gray>'s spawns - players arrive at its world spawn."
+  spawn-outside-border: "<#FFD34E>That spawn is outside <#FF6BE8><map><#FFD34E>'s border."
+  border-set: "<gray>Border for <#FF6BE8><map><gray>: <white><size> <gray>wide, centred on <white><x>, <z><gray>."
+  border-off: "<gray>Border for <#FF6BE8><map> <gray>switched off."
+  border-usage: "<gray>Use <white>/ffamap admin border <map_id> on<gray> or <white>off"
+  teleported: "<gray>Teleported to <#FF6BE8><map><gray>."
+  preview-loading: "<gray>Loading <#FF6BE8><map> <gray>for a look around..."
+  preview-ready: "<#FF6BE8><map> <gray>is loaded. It's restored and unloaded again once everyone leaves."
+  preview-failed: "<#FF6BE8><map> <gray>didn't load: <white><problem>"
+  repair-started: "<gray>Restoring <#FF6BE8><map> <gray>from its template..."
+  repair-loaded: "<#FF6BE8><map> <gray>is loaded - it's restored when it closes."
+  repaired: "<#FF6BE8><map> <gray>restored: <white><copied> <gray>copied, <white><deleted> <gray>removed, <white><ms> <gray>ms."
+  repair-failed: "<#FF6BE8><map> <gray>could not be restored: <white><problem>"
+  npc-usage: "<gray>Use <white>/ffamap admin npc add|remove <id> <gray>or <white>npc list<gray>. The id comes from /npc select then /npc id."
+  npc-added: "<gray>Citizens NPC <white><id> <gray>is now a map NPC."
+  npc-removed: "<gray>Citizens NPC <white><id> <gray>removed."
+  npc-list: "<gray>Map NPCs: <white><ids>"
+  npc-no-citizens: "<#FFD34E>Citizens isn't installed - have your NPC plugin run <white>ffamap <#FFD34E>as the player."
+  reloaded: "<gray>Reloaded - <white><maps> <gray>maps."
+  reload-failed: "<#FF5C5C>Reload failed - the old settings are still in use. See the console."
+  save-failed: "<#FF5C5C>Couldn't save: <white><problem>"
+  # The staff panel
+  setting-changed: "<gray><setting> <white>→ <#FF6BE8><value>"
+  map-enabled: "<#FF6BE8><map> <gray>is in the rotation."
+  map-disabled: "<#FF6BE8><map> <gray>is out of the rotation."
+  map-renamed: "<gray>Renamed to <#FF6BE8><map><gray>."
+  map-icon: "<#FF6BE8><map> <gray>now shows as <white><item><gray>."
+  map-time: "<#FF6BE8><map> <gray>time of day: <white><value><gray>."
+  map-radius: "<#FF6BE8><map> <gray>random spawn: <white><value><gray>."
+  map-removed: "<#FF6BE8><map> <gray>removed. Its template is kept in <white><folder><gray> - move it back to add the map again."
+  hold-a-named-item: "<gray>Hold an item renamed in an anvil - its name becomes the map's name."
+  hold-an-item: "<gray>Hold the item the map should show as."
+  import-started: "<gray>Adding <white><name><gray>..."
+  import-done: "<#FF6BE8><map> <gray>added - check its spawn and border in <white>/ffamap admin<gray>."
+  import-failed: "<white><name> <gray>could not be added: <white><problem>"
+  new-maps: "<white><count> <gray>new map(s) waiting in the templates folder - <white>/ffamap admin <gray>to add them."
+  import-none: "<gray>Nothing new in <white><folder><gray>. Upload a world folder or a .zip of one there first."
+  import-list: "<gray>Waiting to be added: <white><names><gray>. Use <white>/ffamap admin import <name><gray> or <white>all<gray>."
+  import-unknown: "<gray>Nothing called <white><input> <gray>is waiting in the templates folder."
+  npc-look: "<gray>Look at a Citizens NPC (within 8 blocks), then click again."
+  last-map: "<#FF5C5C>That's the last map in the rotation - put another one in first."
+  remove-in-use: "<#FF6BE8><map> <gray>is loaded or coming up - remove it once it's closed."
